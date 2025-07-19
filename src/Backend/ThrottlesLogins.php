@@ -53,7 +53,7 @@ trait ThrottlesLogins
         );
 
         throw ValidationException::withMessages([
-            $this->loginType() => [Lang::get('auth.throttle', [
+            $this->getLoginType($request) => [Lang::get('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ])],
@@ -90,7 +90,7 @@ trait ThrottlesLogins
      */
     protected function throttleKey(Request $request)
     {
-        return Str::lower($request->input($this->loginType())).'|'.$request->ip();
+        return Str::lower($request->input($this->getLoginType($request))).'|'.$request->ip();
     }
 
     /**
